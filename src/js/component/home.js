@@ -1,129 +1,121 @@
 import React, { useState, useEffect } from "react";
-import { ListaTareas } from "./listatareas";
-import swal from "sweetalert";
-//create your first component
 
 export function Home() {
-	const [list, setList] = useState([]);
-	const [task, setTask] = useState("");
+	const [list, setlist] = useState([]);
 
-	//realizará metodo GET
+	function handleEvent(e) {
+		if (e.key === "Enter") {
+			setlist([...list, { label: e.target.value, done: false }]);
+		}
+	}
+
+	const removeItem = indexItem => {
+		setlist(prevState =>
+			prevState.filter((todo, index) => index !== indexItem)
+		);
+	};
+
+	const updateList = theList => {
+		fetch("https://assets.breatheco.de/apis/fake/todos/user/jorgebeto", {
+			headers: { "Content-Type": "application/json" },
+			method: "PUT",
+			body: JSON.stringify(theList)
+		})
+			.then(response => response.json())
+			.then(result => console.log(result))
+			.catch(error => console.log("error", error));
+	};
+
+	async function deleteALL() {
+		//delete
+		await fetch(
+			"https://assets.breatheco.de/apis/fake/todos/user/jorgebeto",
+			{
+				method: "DELETE",
+				headers: {
+					"Content-Type": "application/json"
+				}
+			}
+		)
+			.then(response => response.json())
+			.then(result => console.log(result))
+			.catch(error => console.log("error", error));
+
+		//POST
+
+		var myHeaders = new Headers();
+		myHeaders.append("Content-Type", "application/json");
+
+		var raw = JSON.stringify([]);
+
+		var requestOptions = {
+			method: "POST",
+			headers: myHeaders,
+			body: raw
+		};
+
+		await fetch(
+			"https://assets.breatheco.de/apis/fake/todos/user/jorgebeto",
+			requestOptions
+		)
+			.then(response => response.text())
+			.then(result => console.log(result))
+			.catch(error => console.log("error", error));
+
+		//GET
+		fetch("https://assets.breatheco.de/apis/fake/todos/user/jorgebeto")
+			.then(response => response.json())
+			.then(result => setlist(result))
+			.catch(error => console.log("error", error));
+	}
+
 	useEffect(() => {
-		loadtodoList();
+		fetch("https://assets.breatheco.de/apis/fake/todos/user/jorgebeto")
+			.then(response => response.json())
+			.then(result => setlist(result))
+			.catch(error => console.log("error", error));
 	}, []);
+
 	useEffect(() => {
-		console.log(list);
-		updateTodoList();
+		updateList(list);
 	}, [list]);
 
-	const loadtodoList = () => {
-		fetch("https://assets.breatheco.de/apis/fake/todos/user/SilMontes", {
-			method: "GET",
-			headers: {
-				"Content-Type": "application/json"
-			}
-		})
-			.then(resp => resp.json())
-			.then(data => setList(data))
-			.catch(error => console.error("Error: ", error));
-	};
-	//utilizado cada vez que se realicen actualizaciones(añadir o eliminar tareas en este caso)
-	const updateTodoList = () => {
-		fetch("https://assets.breatheco.de/apis/fake/todos/user/SilMontes", {
-			method: "PUT",
-			headers: {
-				"Content-Type": "application/json"
-			},
-			body: JSON.stringify(list)
-		})
-			.then(resp => resp.json())
-			.then(data => console.log("Respuesta del servidor: ", data))
-			.catch(error => console.error("Error: ", error));
-	};
-	const handleSubmit = e => {
-		e.preventDefault();
-		if (task === "") {
-			myAlert();
-		} else {
-			setList([...list, { label: task, done: false }]);
-		}
-		setTask("");
-		console.log(list);
-	};
-
-	//
-	const newTodoList = () => {
-		let listArray = [];
-		fetch("https://assets.breatheco.de/apis/fake/todos/user/SilMontes", {
-			method: "POST",
-			body: JSON.stringify(listArray),
-			headers: { "Content-Type": "application/json" }
-		})
-			.then(response => response.json())
-			.then(data => {
-				console.log("newTodoList ", data);
-				loadtodoList();
-			})
-			.catch(error => console.error("Error: ", error));
-	};
-
-	//añadir tarea, la cual será el valor escrito en el input
-	const handleChange = e => {
-		setTask(e.target.value);
-	};
-	const deleteEverything = () => {
-		fetch("https://assets.breatheco.de/apis/fake/todos/user/SilMontes", {
-			method: "DELETE",
-			headers: { "Content-Type": "application/json" }
-		})
-			.then(response => response.json())
-			.then(data => {
-				newTodoList();
-				console.log(data);
-			})
-			.catch(error => console.error("Error: ", error));
-	};
-
-	const myAlert = () => {
-		swal({
-			title: "Oops!",
-			text: "Need to add a task",
-			icon: "warning",
-			button: "Okay!"
-		});
-	};
 	return (
-		<React.Fragment>
-			<div className="text-center">
-				<p>todos</p>
-			</div>
-			{/*<p>{JSON.stringify(task)}</p>
-			<p>{JSON.stringify(list)}</p>*/}
-			<div className="formDiv">
-				<form className="formulario" onSubmit={e => handleSubmit(e)}>
-					<input
-						type="text"
-						placeholder="What needs to be done?"
-						onChange={e => handleChange(e)}
-						value={task}
-					/>
-				</form>
-				<ListaTareas
-					list={list}
-					updateList={setList}
-					updateTodoList={updateTodoList}
+		<div className="container">
+			<div className="box">
+				<h1>Todo</h1>
+
+				<input
+					type="text"
+					placeholder="What needs to be done?"
+					onKeyDown={event => handleEvent(event)}
+					className="m-2"
 				/>
-				<cite>{"Pending tasks: " + list.length}</cite>
-			</div>
-			<div className="btnDeleteContainer">
 				<button
-					onClick={() => {
-						deleteEverything();
-					}}
-					className="deleteAllButton">
-					Delete Everything
+					className="button2 btn btn-danger m-3"
+					onClick={() => deleteALL()}>
+					Delete List
 				</button>
+				<div className="list-container">
+					<ul>
+						{list.map((item, index) => {
+							return (
+								<div className="list-box" key={index}>
+									<li>{item.label}</li>
+									<button
+										className="button1 btn"
+										onClick={() => removeItem(index)}>
+										X
+									</button>
+								</div>
+							);
+						})}
+						<div id="espacio"></div>
+						<p>{list.length + "   item added"}</p>
+						<div id="espacio"></div>
+					</ul>
+				</div>
 			</div>
-		</React.Fragment>
+		</div>
 	);
 }

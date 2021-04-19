@@ -1,87 +1,64 @@
 @import "~bootstrap/scss/bootstrap.scss";
 
-body{
-    background: #fafafa;
-}
-p{
-    font-size: 100px;
-    font-weight: lighter;
-    color:red;
-}
-.formDiv{
-    margin: auto;
-    max-width: 800px;
-    width: 90%;
-    text-align: center;
-    background: #f4f4f4;
-    font-size: 25px;
-     box-shadow: 5px 5px #f4f4f4, 10px 10px #c3c3c3, 15px 15px #c3c3c3
-}
-
+// .container{
+//     background-color: red;
+// }
 input{
-    margin-bottom:20px;
-    padding:10px;
-    width: 70%;
-    border:none;
-    outline: none;
-    margin-top: 20px;
+    border-radius: 25px;
 }
-
- .listaDiv{
-    padding: 10px;
-}
-.listaDiv .lista{
-    display: block;
-}
-.listaDiv li{
-    margin: 0;
-    list-style: none;
-    text-align: left;
-}
-.lista{
-    height: 50px;
-    border-bottom: 1px solid #c3c3c3;
-    padding: 10px;
-}
-
-.listaDiv .lista button{
-   text-align: center;
-   width: 20px;
-   height: 20px;
-   border-radius: 50%;
-   justify-content: center;
-   font-size: 10px;
-   padding:2px;
-   color:blue;
-   float: right;
-   border-color: blue;
-   background: turquoise;
- } 
-#pushpin{
-     color:blue;
-     padding-right: 10px;
- }
- .deleteAllButton{
-     background: #9cffff ;
-     color:#800080;
-     margin-top: 20px;
-     padding: 10px;
-     font-size: 20px;
-     font-weight: bolder;
-     border-radius: 20px;
- }
-.btnDeleteContainer{
-     margin-top: 20px;
+.box{
+    margin: auto;
+    background-color: wheat;
+    border-radius: 15px;
+    width: 400px;
+    min-height: 500px;
     text-align: center;
- }
-/* 
+    
+}
 
-    You can write your own styles here...
+.list-container{
+    display: inline-flexbox;
+    flex-direction: row;
+    margin: auto;
+    width: 390px;
     
-    
-    ...Or you can use the import command to include 
-    other sylesheets into your bunde as well, e.j:
-    
-    import 'relative/path/to/stylesheet.scss';
+}
 
-*/
+.list-box{
+   
+    margin: 1px;
+    padding: 1px;
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+    
+    
+}
+ul{
+    
+    list-style-type: none;
+    margin: 0px;
+    padding: 0px;
+    display: flex;
+    flex-flow: column;
+}
+li{
+    width: 350px;
+    margin: 2px;
+    padding: 5px;
+   background-color: white;
+    border-radius: 25px;
+    // display: flex;
+    // flex-direction: row;
+    
+}
+.button1{
+    background-color: white;
+    border-radius: 50px;
+   
+    
+}
+.button2{
+    border-radius: 25px;
+}
+
